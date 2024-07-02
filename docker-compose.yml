@@ -1,0 +1,52 @@
+version: "3.8"
+services:
+  elevators-postgres:
+    image: postgres
+    container_name: elevators-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: zaq1@WSX
+      POSTGRES_DB: elevatorsystem
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+#  backend:
+#    build:
+#      context: ./backend
+#      dockerfile: ../docker/backend/Dockerfile
+#    volumes:
+#      - ./:/app
+#    ports:
+#      - "8000:8080"
+#    depends_on:
+#      - elevators-postgres
+
+#  frontend:
+#    build:
+#      context: .
+#      dockerfile: docker/frontend/Dockerfile
+#    volumes:
+#      - ./:/app
+#    ports:
+#      - "3000:3000"
+#    depends_on:
+#      - elevators-postgres
+
+
+    nginx:
+        container_name: http
+        restart: always
+        build:
+            context: ./nginx
+            dockerfile: ../docker/nginx/Dockerfile
+        ports:
+            - "8080:8080"
+        depends_on:
+            -   "backend"
+            -   "frontend"
+volumes:
+    postgres:

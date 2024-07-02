@@ -1,0 +1,141 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Expo
+.expo/
+.expo-shared/
+
+# TypeScript
+*.tsbuildinfo
+
+# Angular
+/dist/
+.tmp/
+out-tsc/
+.angular/
+.sass-cache
+.angular-cache/
+coverage/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Angular i18n
+/src/locale/
+*.po
+*.pot
+
+# Java
+*.class
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.log
+*.ctxt
+hs_err_pid*
+replay_pid*
+*.out
+*.crash
+*.pid
+*.hprof
+*.cpt
+*.src.zip
+
+# Spring Boot
+/target/
+/build/
+/.mvn/
+/**/mvnw
+/**/mvnw.cmd
+/.settings/
+/**/spring-boot-devtools.properties
+/.idea/
+/.vscode/
+*.iml
+*.ipr
+*.iws
+*.db
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Miscellaneous
+*.env
+*.log
+*.temp
+*.tmp
+*.cache
+*.bak
+*.swp
+*.lock
+*.pid
+*.seed
+*.pid.lock
+.idea
+.project
+.classpath
+.vscode
+
+# IDEs and editors
+/.project
+/.classpath
+/.settings
+/.vscode
+
+# System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+*.swp
+*.swo
+*.swn
+*.bak
+*.swp
+*.swo
+*.swn
+*.pid
+*.seed
+*.pid.lock
+
+# Logs and databases
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+.yarn-integrity
+testem.log
+
+# IntelliJ
+/.idea/
+/.idea/
+/*.iml
+
+# Eclipse
+/.project
+/.metadata
+/.classpath
+/.settings
+/*.launch
+
+# VS Code
+/.vscode/
+/.vscode/
+
+# WebStorm
+/.idea/
+/.idea/
+/*.iml
+
+# macOS
+.DS_Store
+.DS_Store?
+.AppleDouble
+.LSOverride

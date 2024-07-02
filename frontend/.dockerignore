@@ -1,0 +1,32 @@
+# Ignore node_modules directory
+node_modules
+
+
+# Ignore IDEs and editors configuration files
+.idea
+.vscode
+*.iml
+*.ipr
+*.iws
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+
+# Ignore system files
+.project
+.classpath
+
+
+# Ignore log files and temporary files
+*.log
+*.temp
+*.tmp
+*.cache
+*.bak
+*.swp
+*.lock
+*.pid
+*.seed
+*.pid.lock
