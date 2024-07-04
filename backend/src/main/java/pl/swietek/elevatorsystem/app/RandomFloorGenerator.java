@@ -3,6 +3,8 @@ package pl.swietek.elevatorsystem.app;
 import lombok.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Random;
+
 @Component
 public class RandomFloorGenerator {
 
@@ -23,6 +25,8 @@ public class RandomFloorGenerator {
 
         randomNumber = Math.abs(randomNumber % range) + from;
 
-        return (int) randomNumber;
+//        return (int) randomNumber;
+        Random random = new Random();
+        return random.nextInt((to - from) + 1) + from;
     }
 }

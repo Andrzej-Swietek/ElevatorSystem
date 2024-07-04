@@ -16,20 +16,22 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/elevator-system")
+@RequestMapping("/elevator-system")
 public class ElevatorSimulationController {
     @Autowired
     private ElevatorSimulationService elevatorService;
 
     @PostMapping("/pickup")
     public ResponseEntity<Void> pickup(@RequestBody PickupRequest request) {
+        request.validate();
         elevatorService.pickup(request.direction(), request.direction());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/update")
     public ResponseEntity<Void> update(@RequestBody UpdateRequest request) {
-        elevatorService.update(request.elevatorID(), request.newCurrentFloor(), request.newCurrentDirection());
+        request.validate();
+        elevatorService.update(request.elevatorID(), request.newCurrentFloor(), request.newTargetFloor());
         return ResponseEntity.ok().build();
     }
 

@@ -1,12 +1,11 @@
 package pl.swietek.elevatorsystem.app.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import pl.swietek.elevatorsystem.app.ElevatorSystem;
 import pl.swietek.elevatorsystem.app.RandomFloorGenerator;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Data
 public class Elevator {
@@ -14,13 +13,23 @@ public class Elevator {
     private final static int MAX_OCCUPANCY = 15;
 
     private int currentFloor = 0;
-    private int nextSelectedFloor; //TODO: ?????
+    private int nextSelectedFloor; // Very last target it has on its list
+
     private int currentOccupancy = 0;
     private ElevatorState elevatorState = ElevatorState.IDLE;
 
     private Map<Integer, Integer> targetFloors = new HashMap<>();
+    private Map<Integer, Integer> pickupFloorsDown = new HashMap<>();
+    private Map<Integer, Integer> pickupFloorsUp = new HashMap<>();
 
     private final RandomFloorGenerator randomFloorGenerator = new RandomFloorGenerator();
+
+
+    public Elevator(int id, int currentFloor){
+        this.id = id;
+        this.currentFloor = currentFloor;
+    }
+
 
     public ElevatorStatus getStatus(){
         return new ElevatorStatus(id, currentFloor, nextSelectedFloor);
@@ -29,27 +38,20 @@ public class Elevator {
     public void setElevatorState(ElevatorState elevatorState){ this.elevatorState = elevatorState; }
 
 
-    public void update(int newCurrentFloor, int newCurrentDirection) {
+    public void update(int newCurrentFloor, int newTargetFloor) {
         this.currentFloor = newCurrentFloor;
-        this.nextSelectedFloor = newCurrentDirection;
+
+        //this.nextSelectedFloor = newCurrentDirection;
+
+        this.incrementOrSetCount(targetFloors, newTargetFloor);
     }
 
     public void handlePickUp(int startingFloor, int direction ) {
         // TODO: CHECK SELECTED FLOOR
-        currentOccupancy++;
         if (elevatorState == ElevatorState.IDLE)
-            elevatorState = ElevatorState.fromValue(direction);
+            elevatorState = ElevatorState.fromValue(Integer.compare(startingFloor, currentFloor));
 
-        final int chosenFloor = switch(elevatorState) {
-            case IDLE -> randomFloorGenerator.getNextFloor(0, ElevatorSystem.NO_FLOORS);
-            case DOWN -> randomFloorGenerator.getNextFloor(0, startingFloor);
-            case UP  -> randomFloorGenerator.getNextFloor(startingFloor, ElevatorSystem.NO_FLOORS);
-        };
-
-        targetFloors
-                .computeIfPresent(chosenFloor, (key, value) -> value + 1);
-
-        if( !targetFloors.containsKey(chosenFloor) ) targetFloors.put(chosenFloor, 1);
+        this.incrementOrSetCount(direction > 0 ? pickupFloorsUp : pickupFloorsDown, startingFloor);  // COMING TO PICK UP A CLIENT
     }
 
     public void step(){
@@ -61,8 +63,62 @@ public class Elevator {
             if (currentOccupancy <= 0) elevatorState= ElevatorState.IDLE;
             return;
         }
+        if (pickupFloorsUp.containsKey(currentFloor)) {
+            currentOccupancy += pickupFloorsUp.get(currentFloor);
+            this.setElevatorState(ElevatorState.UP);
+
+            // CLIENTS CHOOSE THE FLOORS
+            for (int i = 0; i < pickupFloorsUp.get(currentFloor); i++) {
+                final int chosenFloor = randomFloorGenerator.getNextFloor(currentFloor, ElevatorSystem.NO_FLOORS);
+                this.incrementOrSetCount(targetFloors, chosenFloor);
+            }
+            pickupFloorsUp.remove(currentFloor);
+        }
+        if (pickupFloorsDown.containsKey(currentFloor)) {
+            currentOccupancy += pickupFloorsDown.get(currentFloor);
+            this.setElevatorState(ElevatorState.DOWN);
+
+            // CLIENTS CHOOSE THE FLOORS
+            for (int i = 0; i < pickupFloorsDown.get(currentFloor); i++) {
+                final int chosenFloor = randomFloorGenerator.getNextFloor(0, currentFloor);
+                this.incrementOrSetCount(targetFloors, chosenFloor);
+            }
+            pickupFloorsDown.remove(currentFloor);
+        }
         // Else or when they already left go up
-        currentFloor += elevatorState.getValue();
+        nextSelectedFloor = this.calculateNextSelectedFloor();
+
+
+        if ( currentFloor == nextSelectedFloor && targetFloors.isEmpty()) {
+            elevatorState = ElevatorState.IDLE; // STOP LIFT
+        } else {
+            currentFloor += elevatorState.getValue();
+        }
+
+        // SAFETY REDUNDANCY
+        if (currentFloor < 0) {
+            currentFloor = 0; elevatorState = ElevatorState.IDLE;
+        }
+
+        if (currentFloor > ElevatorSystem.NO_FLOORS) {
+            currentFloor = ElevatorSystem.NO_FLOORS; elevatorState = ElevatorState.IDLE;
+        }
+    }
+
+    public ElevatorData getElevatorData(){
+        return new ElevatorData(currentFloor, nextSelectedFloor, currentOccupancy, elevatorState, targetFloors, pickupFloorsUp, pickupFloorsDown );
+    }
+
+    private int calculateNextSelectedFloor() {
+        Set<Integer> combinedTargets = new HashSet<>();
+        combinedTargets.addAll(pickupFloorsUp.keySet());
+        combinedTargets.addAll(pickupFloorsDown.keySet());
+        combinedTargets.addAll(targetFloors.keySet());
+        return switch (elevatorState) {
+            case IDLE -> combinedTargets.stream().min(Comparator.naturalOrder()).orElse(0);
+            case UP -> combinedTargets.stream().max(Comparator.naturalOrder()).orElse(0);
+            case DOWN -> combinedTargets.stream().min(Comparator.naturalOrder()).orElse(0);
+        };
     }
 
     public boolean includesTargetFloor(int targetFloor){
@@ -70,8 +126,12 @@ public class Elevator {
         return ElevatorState.UP.equals(elevatorState) && currentFloor <= targetFloor;
     }
 
-    public void getNewPassenger() {
+    public Set<Integer> getCombinedPickupFloors() {
+        Set<Integer> combinedPickup = new HashSet<>();
+        combinedPickup.addAll(pickupFloorsUp.keySet());
+        combinedPickup.addAll(pickupFloorsDown.keySet());
 
+        return combinedPickup;
     }
 
     public int getPrognosedOccupancy(int floor) {
@@ -85,8 +145,27 @@ public class Elevator {
                 })
                 .reduce( 0, (acc, key) -> acc + this.targetFloors.get(key));
 
+        int numberOfNewPassengersUp = this.pickupFloorsUp.keySet().stream()
+                .filter(targetFloor -> {
+                    if (elevatorState == ElevatorState.UP) {
+                        return targetFloor >= currentFloor && targetFloor <= floor;
+                    } else {
+                        return targetFloor <= currentFloor && targetFloor >= floor;
+                    }
+                })
+                .reduce( 0, (acc, key) -> this.pickupFloorsUp.get(key) != null ? acc + this.pickupFloorsUp.get(key) : acc);
 
-        return currentOccupancy - numberOfLeavingPassengers;
+        int numberOfNewPassengersDown = this.pickupFloorsUp.keySet().stream()
+                .filter(targetFloor -> {
+                    if (elevatorState == ElevatorState.UP) {
+                        return targetFloor >= currentFloor && targetFloor <= floor;
+                    } else {
+                        return targetFloor <= currentFloor && targetFloor >= floor;
+                    }
+                })
+                .reduce( 0, (acc, key) -> this.pickupFloorsDown.get(key) != null ? acc + this.pickupFloorsDown.get(key) : acc + 0);
+
+        return currentOccupancy - numberOfLeavingPassengers + numberOfNewPassengersUp + numberOfNewPassengersDown;
     }
 
     /**
@@ -149,4 +228,12 @@ public class Elevator {
                 .orElse(0);
     }
 
+
+    private void incrementOrSetCount(Map<Integer,Integer> map, int selectedFloor){
+        map.computeIfPresent(selectedFloor, (key, value) -> value + 1);
+        if( !map.containsKey(selectedFloor) ) map.put(selectedFloor, 1);
+    }
+
 }
+
+
