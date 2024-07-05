@@ -1,0 +1,20 @@
+<app-sliced-section
+  fill="hsl(var(--primary))"
+  orientation="right-bottom"
+/>
+<footer class="grid grid-cols-12">
+  <div class="col-span-full h-[20vh] bg-primary flex flex-col justify-center items-center">
+    <button class="px-12 py-4 border-2 rounded-xl text-lg text-white hover:bg-accent/10">
+      <a
+        routerLink="/simulation"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+      >
+        Enter System Simulation
+      </a>
+    </button>
+  </div>
+  <div class="col-span-full flex flex-row justify-center items-center py-4 bg-primary text-sm text-accent">
+    Copyrights &copy; Andrzej Świętek {{ year }}
+  </div>
+</footer>
