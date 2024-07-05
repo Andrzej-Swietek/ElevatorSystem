@@ -27,7 +27,7 @@ public class ElevatorSimulationServiceImpl implements ElevatorSimulationService 
 
     @Override
     public List<ElevatorStatus> status() {
-        return List.of();
+        return this.elevatorSystem.status();
     }
 
     @Override

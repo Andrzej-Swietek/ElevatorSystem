@@ -1,0 +1,18 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+###
+
+###
+POST http://localhost:8080/elevator-system/pickup
+
+###
+POST http://localhost:8080/elevator-system/step
+
+###
+GET http://localhost:8080/elevator-system/status
+
+###
+POST http://localhost:8080/elevator-system/update
+Content-Type: application/json
