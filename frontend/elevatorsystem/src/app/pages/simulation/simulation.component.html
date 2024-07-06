@@ -14,59 +14,47 @@
   @if (isStarted){
 
       <div [style]="getGridStyle()" class="w-full gap-4 mt-8 px-4">
-        @for(block of Array.from({ length: (noElevators+1) * noFloors }).keys(); track block) {
-          <ng-container>
-            @if (block % (noElevators+1) == 0){
-              <div class="col-span-1 grid grid-cols-2 bg-primary h-[8vh] text-sm text-accent rounded-md">
-
+        <div class="grid grid-cols-1 gap-4">
+          @for(floor of Array.from({ length: noFloors }).keys(); track floor){
+            <div class="col-span-1 grid grid-cols-2 bg-primary h-[8vh] text-sm text-accent rounded-md">
                 <div class="flex flex-col items-center justify-center">
-                  <div>Floor {{ getFloor(block) }}</div>
+                  <div>Floor {{ getReverseFloorIndex(floor) }}</div>
                   <div class="flex-center gap-2 mt-2">
                     <img src="/user.png" alt="up" class="w-[25px] h-[25px] invert">
-                    <div>x{{getWaitingCountPerFloor(getFloor(block))}}</div>
+                    <div>x{{getWaitingCountPerFloor(getReverseFloorIndex(floor))}}</div>
                   </div>
                 </div>
-                <div class="flex flex-col items-center justify-center">
+              <div class="flex flex-col items-center justify-center">
 
-                  @if (! (getFloor(block) === noFloors-1)) {
-                    <div (click)="pickup(getFloor(block), 1)" class="px-[10px] overflow-hidden cursor-pointer hover:bg-accent/10 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
-                      <img src="/up.png" alt="up" class="w-[45px] h-[45px] invert">
-                    </div>
-                  }
+                @if (! (getReverseFloorIndex(floor) === noFloors-1)) {
+                  <div (click)="pickup(getReverseFloorIndex(floor), 1)" class="px-[10px] overflow-hidden cursor-pointer hover:bg-accent/10 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+                    <img src="/up.png" alt="up" class="w-[45px] h-[45px] invert">
+                  </div>
+                }
 
-                  @if (! (getFloor(block) === 0)) {
-                    <div (click)="pickup(getFloor(block), -1)" class="px-[10px] overflow-hidden cursor-pointer hover:bg-accent/10 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
-                      <img src="/down.png" alt="down" class="w-[45px] h-[45px] invert" >
-                    </div>
-                  }
-                </div>
-              </div>
-
-            } @else {
-              <div class="col-span-1 flex-center bg-accent h-[8vh] border-2 border-primary rounded-md">
-                @if( helperIfLiftIsOnTheFloor( block ) ){
-                  <img src="/elevator_icon.png" alt="elevator icon" class="h-full aspect-square" />
+                @if (! (getReverseFloorIndex(floor) === 0)) {
+                  <div (click)="pickup(getReverseFloorIndex(floor), -1)" class="px-[10px] overflow-hidden cursor-pointer hover:bg-accent/10 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+                    <img src="/down.png" alt="down" class="w-[45px] h-[45px] invert" >
+                  </div>
                 }
               </div>
-            }
-          </ng-container>
+            </div>
+          }
+          <div class="rounded-md border-2 border-primary h-[8vh]"></div>
+        </div>
+
+        @for (elevator of simulationData(); track elevator; let index = $index){
+          <app-simulation-elevator-shaft
+            [elevator]="elevator"
+            [elevatorIndex]="index"
+            [numberOfElevators]="noElevators"
+            [numberOfFloors]="noFloors"
+          ></app-simulation-elevator-shaft>
         }
 
         <div></div>
-        @for (elevator of simulationData(); let i = $index ; track elevator) {
-          <div class="col-span-1 grid grid-cols-2 bg-primary h-[8vh] text-sm text-accent rounded-md resize-container">
-            <div class="flex-center col-span-1-or-full">
-              <h2>Elevator {{ i }}</h2>
-            </div>
-            <div class="flex flex-col items-center justify-center only-when-big-container">
-              <div> <b>Current Floor:</b> {{ elevator.currentFloor }}</div>
-              <div> <b>Elevator State:</b> {{ elevator.elevatorState }}</div>
-              <div> <b>Elevator Occupancy:</b> {{ elevator.currentOccupancy }}</div>
-            </div>
-          </div>
-        }
+
       </div>
-<!--      <pre class="mt-4">{{ simulationData() | json }}</pre>-->
 
   } @else {
     <section class="w-[50%] h-[100%] py-24">

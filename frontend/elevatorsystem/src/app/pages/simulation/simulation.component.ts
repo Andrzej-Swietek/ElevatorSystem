@@ -4,6 +4,9 @@ import {JsonPipe, NgForOf, NgOptimizedImage} from "@angular/common";
 import {ElevatorSimulationService} from "@services/elevator-simulation.service";
 import {StartingFormComponent} from "@components/starting-form/starting-form.component";
 import {IElevatorData} from "@shared/types";
+import {
+  SimulationElevatorShaftComponent
+} from "@components/simulation-elevator-shaft/simulation-elevator-shaft.component";
 
 
 @Component({
@@ -13,7 +16,8 @@ import {IElevatorData} from "@shared/types";
     StartingFormComponent,
     JsonPipe,
     NgForOf,
-    NgOptimizedImage
+    NgOptimizedImage,
+    SimulationElevatorShaftComponent
   ],
   templateUrl: './simulation.component.html',
   styleUrl: './simulation.component.scss'
@@ -114,5 +118,9 @@ export class SimulationComponent {
 
   public resetSimulation(): void {
     location.reload();
+  }
+
+  public getReverseFloorIndex(index: number) {
+    return this.noFloors - index - 1;
   }
 }
