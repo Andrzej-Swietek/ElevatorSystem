@@ -111,4 +111,8 @@ export class SimulationComponent {
   public trackByFn(index: number, item: any): number {
     return index;
   }
+
+  public resetSimulation(): void {
+    location.reload();
+  }
 }
