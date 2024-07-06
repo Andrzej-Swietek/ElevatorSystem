@@ -3,6 +3,7 @@ GET https://examples.http-client.intellij.net/get
     ?generated-in=IntelliJ IDEA
 
 ###
+POST http://localhost:8080/elevator-system/start
 
 ###
 POST http://localhost:8080/elevator-system/pickup

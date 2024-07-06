@@ -92,7 +92,7 @@ export class ElevatorModelComponent implements OnInit, AfterViewInit {
   private animate(): void  {
     requestAnimationFrame(this.animate.bind(this));
     // TODO : ANIMATION
-    this.mesh.rotateZ(0.005);
+    this.mesh?.rotateZ(0.005);
     this.renderer.render(this.scene, this.camera);
   };
 

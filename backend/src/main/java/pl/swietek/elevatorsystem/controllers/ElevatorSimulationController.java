@@ -7,8 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
+import pl.swietek.elevatorsystem.app.models.ElevatorData;
 import pl.swietek.elevatorsystem.app.models.ElevatorStatus;
 import pl.swietek.elevatorsystem.requests.PickupRequest;
+import pl.swietek.elevatorsystem.requests.StartRequest;
 import pl.swietek.elevatorsystem.requests.UpdateRequest;
 import pl.swietek.elevatorsystem.services.ElevatorSimulationService;
 
@@ -21,11 +23,20 @@ public class ElevatorSimulationController {
     @Autowired
     private ElevatorSimulationService elevatorService;
 
+    @PostMapping("/start")
+    public ResponseEntity<?> start(@RequestBody StartRequest request) {
+        request.validate();
+        List<ElevatorData> elevatorsData = elevatorService.startSimulation(
+                request.numberOfElevators(), request.numberOfFloors()
+        );
+        return  ResponseEntity.ok(elevatorsData);
+    }
+
     @PostMapping("/pickup")
-    public ResponseEntity<Void> pickup(@RequestBody PickupRequest request) {
+    public ResponseEntity<List<ElevatorData>> pickup(@RequestBody PickupRequest request) {
         request.validate();
         elevatorService.pickup(request.direction(), request.direction());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(elevatorService.getSimulationData());
     }
 
     @PostMapping("/update")
@@ -36,9 +47,9 @@ public class ElevatorSimulationController {
     }
 
     @PostMapping("/step")
-    public ResponseEntity<Void> step() {
+    public ResponseEntity<List<ElevatorData>> step() {
         elevatorService.step();
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(elevatorService.getSimulationData());
     }
 
     @GetMapping("/status")

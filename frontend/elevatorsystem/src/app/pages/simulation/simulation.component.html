@@ -1,1 +1,7 @@
-<p>simulation works!</p>
+<aside class="mt-24 py-4 w-full h-18 flex flex-row justify-center align-center gap-x-4 bg-accent shadow border-b-2 border-b-primary relative">
+  <button class="btn absolute left-8" (click)="toggle3D()"> {{ is3D ? "3D" : "2D" }} </button>
+  <button class="btn"> Start </button>
+  <button class="btn"> Reset </button>
+  <button class="{{ autoStep ? 'outlined-btn' :' btn'   }}" [disabled]="autoStep"> Step &#187; </button>
+  <button (click)="toggleAutoStep()" class="ml-16 {{ autoStep ? ' btn' : 'outlined-btn'  }}"> Auto Step &#187; </button>
+</aside>
