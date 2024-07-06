@@ -26,4 +26,5 @@ export class ElevatorService implements IElevatorService{
   public getElevatorById(id: number): Observable<IElevatorData> {
     return this.http.get(`${this.URL}/${id}`);
   }
+
 }

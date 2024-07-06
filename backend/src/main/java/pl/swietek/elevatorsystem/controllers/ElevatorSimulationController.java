@@ -1,7 +1,9 @@
 package pl.swietek.elevatorsystem.controllers;
 
+import jakarta.xml.bind.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +38,7 @@ public class ElevatorSimulationController {
     @PostMapping("/pickup")
     public ResponseEntity<List<ElevatorData>> pickup(@RequestBody PickupRequest request) {
         request.validate();
-        elevatorService.pickup(request.direction(), request.direction());
+        elevatorService.pickup(request.floor(), request.direction());
         return ResponseEntity.ok(elevatorService.getSimulationData());
     }
 
@@ -56,5 +58,11 @@ public class ElevatorSimulationController {
     @GetMapping("/status")
     public ResponseEntity<List<ElevatorStatus>> status() {
         return ResponseEntity.ok(elevatorService.status());
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleValidationFailedException(ValidationException exception) {
+        return String.join("\n", exception.getMessage());
     }
 }

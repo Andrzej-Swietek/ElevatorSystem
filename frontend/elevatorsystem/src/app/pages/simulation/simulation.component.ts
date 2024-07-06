@@ -1,8 +1,10 @@
-import {Component, inject, signal, WritableSignal} from '@angular/core';
+import {Component, inject, signal, WritableSignal, ChangeDetectorRef, NgZone} from '@angular/core';
+import {JsonPipe, NgForOf, NgOptimizedImage} from "@angular/common";
+
 import {ElevatorSimulationService} from "@services/elevator-simulation.service";
 import {StartingFormComponent} from "@components/starting-form/starting-form.component";
 import {IElevatorData} from "@shared/types";
-import {JsonPipe, NgForOf, NgOptimizedImage} from "@angular/common";
+
 
 @Component({
   selector: 'app-simulation',
@@ -19,6 +21,8 @@ import {JsonPipe, NgForOf, NgOptimizedImage} from "@angular/common";
 export class SimulationComponent {
 
   private elevatorSimulationService: ElevatorSimulationService = inject(ElevatorSimulationService);
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  private ngZone: NgZone = inject(NgZone);
 
   protected is3D: boolean = false;
   protected isStarted: boolean = false;
@@ -27,14 +31,17 @@ export class SimulationComponent {
   public noFloors: number = 0;
   public noElevators: number = 0;
 
-  protected simulationData:  WritableSignal<IElevatorData[]> = signal<IElevatorData[]>([]);
+  protected simulationData: WritableSignal<IElevatorData[]> = signal<IElevatorData[]>([]);
+  protected waitingPeople!: Map<number, number>;
 
   public toggleAutoStep(): void {
     this.autoStep = !this.autoStep;
+    this.cdr.detectChanges();
   }
 
   public toggle3D(): void {
     this.is3D = !this.is3D;
+    this.cdr.detectChanges();
   }
 
   public getGridStyle(): string {
@@ -45,13 +52,18 @@ export class SimulationComponent {
     this.elevatorSimulationService.start({
       numberOfElevators: $event.elevators,
       numberOfFloors: $event.floors
-    }).subscribe( (data)=> {
+    }).subscribe((data) => {
       this.noFloors = $event.floors;
       this.noElevators = $event.elevators;
-      console.log(data)
       if (data) {
         this.isStarted = true;
         this.simulationData.set([...data]);
+        this.waitingPeople = ElevatorSimulationService.calculateWaitingPeoplePerFloor(data);
+        this.ngZone.runOutsideAngular(() => {
+          setTimeout(() => {
+            this.cdr.detectChanges();
+          });
+        });
       }
     });
   }
@@ -61,14 +73,42 @@ export class SimulationComponent {
 
   public getFloor(index: number): number { return this.noFloors - Math.floor(index/(this.noElevators+1)) - 1; }
 
-
   public helperIfLiftIsOnTheFloor(block: number){
-    const floor = this.getFloor(block)
+    const floor = this.getFloor(block);
     const data = this.simulationData();
     return data[floor]?.currentFloor == this.getFloor(block) || false;
   }
 
   public async pickup(floor: number, direction: number): Promise<void> {
-    this.elevatorSimulationService.pickup({ floor, direction });
+    this.elevatorSimulationService.pickup({ floor, direction })
+      .subscribe((data) => {
+        this.simulationData.set([...data]);
+        this.waitingPeople = ElevatorSimulationService.calculateWaitingPeoplePerFloor(data);
+        this.ngZone.runOutsideAngular(() => {
+          setTimeout(() => {
+            this.cdr.detectChanges();
+          });
+        });
+      });
+  }
+
+  public getWaitingCountPerFloor(floor: number) {
+    return (this.waitingPeople && this.waitingPeople.has(floor)) ? this.waitingPeople.get(floor)! : 0;
+  }
+
+  public makeSimulationStep(): void {
+    this.elevatorSimulationService.step().subscribe((data)=>{
+      this.simulationData.set([...data]);
+      this.waitingPeople = ElevatorSimulationService.calculateWaitingPeoplePerFloor(data);
+      this.ngZone.runOutsideAngular(() => {
+        setTimeout(() => {
+          this.cdr.detectChanges();
+        });
+      });
+    });
+  }
+
+  public trackByFn(index: number, item: any): number {
+    return index;
   }
 }

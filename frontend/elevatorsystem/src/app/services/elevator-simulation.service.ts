@@ -39,4 +39,45 @@ export class ElevatorSimulationService implements ISimulationService{
   public status(): Observable<IElevatorStatus[]> {
     return this.http.get<IElevatorStatus[]>(`${this.URL}/status`);
   }
+
+  public static calculateWaitingPeoplePerFloor(elevators: IElevatorData[]): Map<number, number> {
+    const waitingMap = new Map<number, number>();
+
+    elevators.forEach((elevator: IElevatorData) => {
+      // Dodawanie osób oczekujących z pickupFloorsUp
+      for (const floor in elevator.pickupFloorsUp) {
+        if (Object.prototype.hasOwnProperty.call(elevator.pickupFloorsUp, floor)) {
+          const count = elevator.pickupFloorsUp[floor];
+          const floorNumber = parseInt(floor);
+          if (Number.isNaN(floorNumber)) {
+            continue; // Skip if floor is not a valid number
+          }
+          if (waitingMap.has(floorNumber)) {
+            waitingMap.set(floorNumber, (waitingMap.get(floorNumber) ?? 0) + count);
+          } else {
+            waitingMap.set(floorNumber, count);
+          }
+        }
+      }
+
+      // Dodawanie osób oczekujących z pickupFloorsDown
+      for (const floor in elevator.pickupFloorsDown) {
+        if (Object.prototype.hasOwnProperty.call(elevator.pickupFloorsDown, floor)) {
+          const count = elevator.pickupFloorsDown[floor];
+          const floorNumber = parseInt(floor);
+          if (Number.isNaN(floorNumber)) {
+            continue; // Skip if floor is not a valid number
+          }
+          if (waitingMap.has(floorNumber)) {
+            waitingMap.set(floorNumber, (waitingMap.get(floorNumber) ?? 0) + count);
+          } else {
+            waitingMap.set(floorNumber, count);
+          }
+        }
+      }
+    });
+
+    return waitingMap;
+  }
+
 }
