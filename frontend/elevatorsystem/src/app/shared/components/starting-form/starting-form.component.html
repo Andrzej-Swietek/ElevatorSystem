@@ -1,0 +1,18 @@
+<h1 class="text-2xl font-bold mb-4">Elevator System Setup</h1>
+<form [formGroup]="elevatorForm" (ngSubmit)="onSubmit()">
+  <div class="mb-4">
+    <label for="floors" class="block text-sm font-medium text-gray-700">Number of Floors</label>
+    <input type="number" id="floors" formControlName="floors" class="mt-1 block w-full p-2 border border-gray-300 rounded" />
+    <div *ngIf="elevatorForm.controls['floors'].invalid && elevatorForm.controls['floors'].touched" class="text-red-500 text-sm">
+      Please enter a valid number of floors.
+    </div>
+  </div>
+  <div class="mb-4">
+    <label for="elevators" class="block text-sm font-medium text-gray-700">Number of Elevators</label>
+    <input type="number" id="elevators" formControlName="elevators" class="mt-1 block w-full p-2 border border-gray-300 rounded" />
+    <div *ngIf="elevatorForm.controls['elevators'].invalid && elevatorForm.controls['elevators'].touched" class="text-red-500 text-sm">
+      Please enter a valid number of elevators.
+    </div>
+  </div>
+  <button type="submit" class="w-full btn" [disabled]="elevatorForm.invalid">Start</button>
+</form>

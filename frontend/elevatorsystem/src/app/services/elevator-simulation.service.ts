@@ -13,7 +13,7 @@ import UpdateRequest = SimulationService.UpdateRequest;
   providedIn: 'root'
 })
 export class ElevatorSimulationService implements ISimulationService{
-  private URL : string = "http://localhost:8080";
+  private URL : string = "http://localhost:8080/elevator-system";
   private http: HttpClient = inject(HttpClient);
 
   public constructor() {

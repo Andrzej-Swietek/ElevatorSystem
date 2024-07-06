@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/elevator-system")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ElevatorSimulationController {
     @Autowired
     private ElevatorSimulationService elevatorService;

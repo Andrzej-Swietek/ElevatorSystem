@@ -65,3 +65,20 @@ body {
     @apply flex flex-row items-center justify-center;
   }
 }
+
+
+.resize-container {
+  container-type: inline-size;
+}
+
+@container (max-width: 400px) {
+  .only-when-big-container {
+    display: none;
+  }
+}
+
+@container (min-width: 401px) {
+  .only-when-big-container {
+    display: flex;
+  }
+}
