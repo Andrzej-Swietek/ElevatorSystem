@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {HeroComponent} from "../../shared/components/hero/hero.component";
-import {ElevatorModelComponent} from "../../shared/components/elevator-model/elevator-model.component";
-import {FooterComponent} from "../../shared/components/footer/footer.component";
+import {HeroComponent} from "@components/hero/hero.component";
+import {ElevatorModelComponent} from "@components/elevator-model/elevator-model.component";
+import {FooterComponent} from "@components/footer/footer.component";
 
 @Component({
   selector: 'app-home',

@@ -1,8 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {IElevatorData, IElevatorStatus} from "../shared/types";
-import {IElevatorService} from "../shared/types/IElevatorService";
+import {IElevatorData, IElevatorStatus} from "@shared/types";
+import {IElevatorService} from "@shared/types/IElevatorService";
 
 @Injectable({
   providedIn: 'root'

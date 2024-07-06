@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {ElevatorSimulationService} from "../../services/elevator-simulation.service";
+import {ElevatorSimulationService} from "@services/elevator-simulation.service";
 
 @Component({
   selector: 'app-simulation',

@@ -3,8 +3,8 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 
 // Types
-import {IElevatorData, IElevatorStatus, ISimulationService} from "../shared/types";
-import {SimulationService} from "../shared/types";
+import {IElevatorData, IElevatorStatus, ISimulationService} from "@shared/types";
+import {SimulationService} from "@shared/types";
 import StartRequest = SimulationService.StartRequest;
 import PickupRequest = SimulationService.PickupRequest;
 import UpdateRequest = SimulationService.UpdateRequest;

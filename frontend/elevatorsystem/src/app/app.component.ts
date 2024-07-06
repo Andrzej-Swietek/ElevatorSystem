@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 
 // Components
-import {NavbarComponent} from "./shared/components/navbar/navbar.component";
+import {NavbarComponent} from "@components/navbar/navbar.component";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 
 @Component({
