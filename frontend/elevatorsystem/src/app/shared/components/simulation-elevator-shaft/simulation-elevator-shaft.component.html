@@ -3,9 +3,10 @@
     <div class="col-span-1 flex-center bg-accent h-[8vh] border-2 border-primary rounded-md">
       @if( numberOfFloors - elevator.currentFloor -1 == floor) {
         <img
+          (click)="selectElevator()"
           src="/elevator_icon.png"
           alt="elevator icon"
-          class="h-full aspect-square"
+          class="h-full aspect-square cursor-pointer"
         />
       }
     </div>
@@ -21,5 +22,4 @@
         <div> <b>Elevator Last Target:</b> {{ elevator.nextSelectedFloor }}</div>
       </div>
     </div>
-
 </div>

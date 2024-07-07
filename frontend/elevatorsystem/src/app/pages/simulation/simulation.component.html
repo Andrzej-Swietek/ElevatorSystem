@@ -49,6 +49,7 @@
             [elevatorIndex]="index"
             [numberOfElevators]="noElevators"
             [numberOfFloors]="noFloors"
+            (onSelected)="selectElevator($event)"
           ></app-simulation-elevator-shaft>
         }
 
@@ -64,3 +65,10 @@
   }
 
 </main>
+@if (showElevatorModal){
+  <app-elevator-details-modal
+   [elevator]="selectedElevator"
+   [showModal]="showElevatorModal"
+   (close)="closeModal()"
+  ></app-elevator-details-modal>
+}
