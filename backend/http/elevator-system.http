@@ -3,9 +3,16 @@ GET https://examples.http-client.intellij.net/get
     ?generated-in=IntelliJ IDEA
 
 ###
+POST http://localhost:8080/elevator-system/start
 
 ###
-POST http://localhost:8080/elevator-system/pickup
+POST http://localhost:8080/elevator-system/pickup HTTP/1.1
+Content-Type: application/json
+
+{
+    "floor": 3,
+    "direction": -1
+}
 
 ###
 POST http://localhost:8080/elevator-system/step

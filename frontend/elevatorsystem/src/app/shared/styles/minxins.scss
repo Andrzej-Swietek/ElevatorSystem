@@ -1,0 +1,38 @@
+@mixin flex($row: row, $wrap: wrap, $x:center, $y:center){
+  display: flex;
+  align-items: $y;
+  justify-content: $x;
+  flex-flow: $row $wrap;
+}
+
+@mixin grid(){
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+@mixin breakpoint($size) {
+
+  @if $size == mobile {
+    @media screen and(max-width: 376px){ @content; }
+  }
+
+  @if $size == tab {
+    @media screen and(min-width: 720px){ @content; }
+  }
+
+  @if $size == thousand {
+    @media screen and(min-width: 1001px){ @content; }
+  }
+
+  @else if $size == laptop {
+    @media screen and(min-width: 1024px) { @content; }
+  }
+
+  @else if $size == desktop {
+    @media screen and(min-width: 1224px) { @content; }
+  }
+
+  @else if $size == big-desktop {
+    @media screen and(min-width: 1500px) { @content; }
+  }
+}

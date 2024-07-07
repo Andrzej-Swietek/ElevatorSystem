@@ -4,10 +4,8 @@ import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import pl.swietek.elevatorsystem.app.models.Elevator;
-import pl.swietek.elevatorsystem.app.models.ElevatorCall;
-import pl.swietek.elevatorsystem.app.models.ElevatorState;
-import pl.swietek.elevatorsystem.app.models.ElevatorStatus;
+import pl.swietek.elevatorsystem.app.models.*;
+import pl.swietek.elevatorsystem.exceptions.ElevatorNotFound;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -93,6 +91,12 @@ public class ElevatorSystem implements Simulation, Iterable<Elevator> {
                 .forEach(Elevator::step);
     }
 
+    public List<ElevatorData> getElevatorsData() {
+        return this.elevators.stream()
+                .map(Elevator::getElevatorData)
+                .toList();
+    }
+
     @Override
     public Iterator<Elevator> iterator() {
         return elevators.iterator();
@@ -120,5 +124,11 @@ public class ElevatorSystem implements Simulation, Iterable<Elevator> {
                 .filter(elevator -> elevator.getElevatorState() == ElevatorState.IDLE)
                 .sorted(Comparator.comparingInt(Elevator::getCurrentFloor))
                 .toList();
+    }
+
+    public ElevatorData getElevatorDataById(Long id) {
+       Elevator elevator = this.elevators.get(Math.toIntExact(id));
+       if (elevator == null) throw new ElevatorNotFound(Math.toIntExact(id));
+       return elevator.getElevatorData();
     }
 }

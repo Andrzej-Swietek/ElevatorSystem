@@ -3,6 +3,7 @@ package pl.swietek.elevatorsystem.services.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.swietek.elevatorsystem.app.ElevatorSystem;
+import pl.swietek.elevatorsystem.app.models.ElevatorData;
 import pl.swietek.elevatorsystem.app.models.ElevatorStatus;
 import pl.swietek.elevatorsystem.services.ElevatorSimulationService;
 
@@ -42,6 +43,22 @@ public class ElevatorSimulationServiceImpl implements ElevatorSimulationService 
 
     @Override
     public void reset() {
+//        this.startSimulation()
+    }
 
+    @Override
+    public List<ElevatorData> startSimulation(int numberOfElevators, int numberOfFloors) {
+        this.elevatorSystem = new ElevatorSystem(numberOfElevators, numberOfFloors);
+        return this.elevatorSystem.getElevatorsData();
+    }
+
+    @Override
+    public List<ElevatorData> getSimulationData() {
+        return this.elevatorSystem.getElevatorsData();
+    }
+
+    @Override
+    public ElevatorData getElevator(Long id) {
+        return this.elevatorSystem.getElevatorDataById(id);
     }
 }

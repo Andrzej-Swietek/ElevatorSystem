@@ -11,8 +11,8 @@ public record PickupRequest(int floor, int direction)
     @Override
     public void validate() {
         List<String> errors = new ArrayList<>();
-        if (floor <= 0) errors.add("floor must be greater than 0");
-        if (direction <= 0) errors.add("direction must be greater than 0");
+        if (floor < 0) errors.add("floor must be greater or equal 0");
+        if (direction != -1 && direction != 1) errors.add("direction must be either -1 or 1");
         if (!errors.isEmpty()) throw new ValidationException(errors);
     }
 }

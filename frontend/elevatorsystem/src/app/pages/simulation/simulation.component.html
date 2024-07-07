@@ -1,0 +1,66 @@
+<aside class="mt-24 py-4 w-full h-18 flex flex-row justify-center align-center gap-x-4 bg-accent shadow border-b-2 border-b-primary relative">
+  <button class="btn absolute left-8" (click)="toggle3D()"> {{ is3D ? "3D" : "2D" }} </button>
+  <button class="btn" (click)="refresh()"> Refresh </button>
+  <button class="btn" (click)="resetSimulation()"> Reset </button>
+  <button (click)="makeSimulationStep()" class="{{ autoStep ? 'outlined-btn' :' btn'   }}" [disabled]="autoStep"> Step &#187; </button>
+  <button
+    (click)="toggleAutoStep()"
+    class="ml-16 {{ autoStep ? ' btn' : 'outlined-btn'  }}"
+  >
+    Auto Step &#187;
+  </button>
+</aside>
+<main class="flex-center h-[100%]">
+  @if (isStarted){
+
+      <div [style]="getGridStyle()" class="w-full gap-4 mt-8 px-4">
+        <div class="grid grid-cols-1 gap-4">
+          @for(floor of Array.from({ length: noFloors }).keys(); track floor){
+            <div class="col-span-1 grid grid-cols-2 bg-primary h-[8vh] text-sm text-accent rounded-md">
+                <div class="flex flex-col items-center justify-center">
+                  <div>Floor {{ getReverseFloorIndex(floor) }}</div>
+                  <div class="flex-center gap-2 mt-2">
+                    <img src="/user.png" alt="up" class="w-[25px] h-[25px] invert">
+                    <div>x{{getWaitingCountPerFloor(getReverseFloorIndex(floor))}}</div>
+                  </div>
+                </div>
+              <div class="flex flex-col items-center justify-center">
+
+                @if (! (getReverseFloorIndex(floor) === noFloors-1)) {
+                  <div (click)="pickup(getReverseFloorIndex(floor), 1)" class="px-[10px] overflow-hidden cursor-pointer hover:bg-accent/10 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+                    <img src="/up.png" alt="up" class="w-[45px] h-[45px] invert">
+                  </div>
+                }
+
+                @if (! (getReverseFloorIndex(floor) === 0)) {
+                  <div (click)="pickup(getReverseFloorIndex(floor), -1)" class="px-[10px] overflow-hidden cursor-pointer hover:bg-accent/10 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+                    <img src="/down.png" alt="down" class="w-[45px] h-[45px] invert" >
+                  </div>
+                }
+              </div>
+            </div>
+          }
+          <div class="rounded-md border-2 border-primary h-[8vh]"></div>
+        </div>
+
+        @for (elevator of simulationData(); track elevator; let index = $index){
+          <app-simulation-elevator-shaft
+            [elevator]="elevator"
+            [elevatorIndex]="index"
+            [numberOfElevators]="noElevators"
+            [numberOfFloors]="noFloors"
+          ></app-simulation-elevator-shaft>
+        }
+
+        <div></div>
+
+      </div>
+
+  } @else {
+    <section class="w-[50%] h-[100%] py-24">
+      <app-starting-form
+        (submitted)="onFormSubmitted($event)" />
+    </section>
+  }
+
+</main>
