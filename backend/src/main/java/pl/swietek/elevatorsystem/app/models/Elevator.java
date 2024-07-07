@@ -69,7 +69,7 @@ public class Elevator {
 
             // CLIENTS CHOOSE THE FLOORS
             for (int i = 0; i < pickupFloorsUp.get(currentFloor); i++) {
-                final int chosenFloor = randomFloorGenerator.getNextFloor(currentFloor, ElevatorSystem.NO_FLOORS);
+                final int chosenFloor = randomFloorGenerator.getNextFloor(currentFloor+1, ElevatorSystem.NO_FLOORS-1);
                 this.incrementOrSetCount(targetFloors, chosenFloor);
             }
             pickupFloorsUp.remove(currentFloor);

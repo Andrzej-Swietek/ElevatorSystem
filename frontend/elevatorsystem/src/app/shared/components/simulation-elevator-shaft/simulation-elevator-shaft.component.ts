@@ -17,6 +17,6 @@ export class SimulationElevatorShaftComponent {
   protected readonly Array = Array;
 
   ngOnInit(): void {
-    console.log(this.elevator)
+    // console.log(this.elevator)
   }
 }

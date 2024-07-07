@@ -60,6 +60,13 @@ public class ElevatorSimulationController {
         return ResponseEntity.ok(elevatorService.status());
     }
 
+    @GetMapping("/simulation-data")
+    public ResponseEntity<List<ElevatorData>> getSimulationData() {
+        return ResponseEntity.ok(elevatorService.getSimulationData());
+    }
+
+
+
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleValidationFailedException(ValidationException exception) {

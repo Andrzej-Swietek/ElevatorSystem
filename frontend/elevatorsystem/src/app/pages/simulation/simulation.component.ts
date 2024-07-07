@@ -73,7 +73,6 @@ export class SimulationComponent {
   }
 
   protected readonly Array = Array;
-  protected readonly Math = Math;
 
   public getFloor(index: number): number { return this.noFloors - Math.floor(index/(this.noElevators+1)) - 1; }
 
@@ -112,15 +111,23 @@ export class SimulationComponent {
     });
   }
 
-  public trackByFn(index: number, item: any): number {
-    return index;
-  }
-
   public resetSimulation(): void {
     location.reload();
   }
 
   public getReverseFloorIndex(index: number) {
     return this.noFloors - index - 1;
+  }
+
+  public refresh(): void {
+    this.elevatorSimulationService.getSimulationData().subscribe((data)=>{
+          this.simulationData.set([...data]);
+          this.waitingPeople = ElevatorSimulationService.calculateWaitingPeoplePerFloor(data);
+          this.ngZone.runOutsideAngular(() => {
+            setTimeout(() => {
+              this.cdr.detectChanges();
+            });
+          });
+        });
   }
 }

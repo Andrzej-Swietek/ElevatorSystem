@@ -80,4 +80,8 @@ export class ElevatorSimulationService implements ISimulationService{
     return waitingMap;
   }
 
+  public getSimulationData(): Observable<IElevatorData[]> {
+    return this.http.get<IElevatorData[]>(`${this.URL}/simulation-data`);
+  }
+
 }
