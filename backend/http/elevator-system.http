@@ -20,6 +20,11 @@ POST http://localhost:8080/elevator-system/step
 ###
 GET http://localhost:8080/elevator-system/status
 
+
+###
+GET http://localhost:8080/elevator-system/simulation-data
+
+
 ###
 POST http://localhost:8080/elevator-system/update
 Content-Type: application/json

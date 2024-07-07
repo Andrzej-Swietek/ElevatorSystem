@@ -7,6 +7,7 @@ import {IElevatorData} from "@shared/types";
 import {
   SimulationElevatorShaftComponent
 } from "@components/simulation-elevator-shaft/simulation-elevator-shaft.component";
+import {ElevatorDetailsModalComponent} from "@components/elevator-details-modal/elevator-details-modal.component";
 
 
 @Component({
@@ -17,7 +18,8 @@ import {
     JsonPipe,
     NgForOf,
     NgOptimizedImage,
-    SimulationElevatorShaftComponent
+    SimulationElevatorShaftComponent,
+    ElevatorDetailsModalComponent
   ],
   templateUrl: './simulation.component.html',
   styleUrl: './simulation.component.scss'
@@ -37,6 +39,9 @@ export class SimulationComponent {
 
   protected simulationData: WritableSignal<IElevatorData[]> = signal<IElevatorData[]>([]);
   protected waitingPeople!: Map<number, number>;
+
+  public selectedElevator: IElevatorData|null = null;
+  public showElevatorModal: boolean = false;
 
   public toggleAutoStep(): void {
     this.autoStep = !this.autoStep;
@@ -129,5 +134,25 @@ export class SimulationComponent {
             });
           });
         });
+  }
+
+  public selectElevator($event: number) {
+    this.selectedElevator = this.simulationData()[$event];
+    this.showElevatorModal = true;
+    this.ngZone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.cdr.detectChanges();
+      });
+    });
+    console.log(this.selectedElevator);
+  }
+
+  public closeModal() {
+    this.showElevatorModal = false;
+    this.ngZone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.cdr.detectChanges();
+      });
+    });
   }
 }

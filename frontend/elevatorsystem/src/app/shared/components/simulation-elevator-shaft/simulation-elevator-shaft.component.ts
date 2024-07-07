@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {IElevatorData} from "@shared/types";
 
 @Component({
@@ -14,9 +14,15 @@ export class SimulationElevatorShaftComponent {
   @Input() numberOfElevators: number = 0;
   @Input() elevatorIndex: number = -1;
 
+  @Output() onSelected = new EventEmitter<number>();
+
   protected readonly Array = Array;
 
   ngOnInit(): void {
     // console.log(this.elevator)
+  }
+
+  public selectElevator(): void {
+    this.onSelected.emit(this.elevatorIndex);
   }
 }
