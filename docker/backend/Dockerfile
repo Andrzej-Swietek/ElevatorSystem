@@ -1,10 +1,11 @@
-FROM openjdk:17-jre-slim
-
+FROM openjdk:21-jdk-slim
 
 WORKDIR /app
 
-COPY target/*.jar app.jar
+RUN ls -l
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "app.jar"]
+CMD ["sh", "-c", "java -jar ./deploy/*.jar"]
+
+#CMD ["java", "-jar", "/deploy/elevatorsystem-0.0.1-SNAPSHOT.jar"]
