@@ -1,0 +1,75 @@
+###
+### Pickup RPC ###
+GRPC localhost:9090/pl.swietek.elevatorsystem.grpc.ElevatorService/Pickup
+Content-Type: application/json
+Key: Value
+
+{
+  "floor": 5,
+  "direction": 1
+}
+
+### Status RPC ###
+
+GRPC localhost:9090/pl.swietek.elevatorsystem.grpc.ElevatorService/Status
+Content-Type: application/json
+
+{}
+
+
+### Update RPC ###
+
+GRPC localhost:9090/pl.swietek.elevatorsystem.grpc.ElevatorService/Update
+Content-Type: application/json
+
+{
+  "elevator_id": 1,
+  "new_current_floor": 3,
+  "new_target_floor": 7
+}
+
+
+### Step RPC ###
+
+GRPC localhost:9090/pl.swietek.elevatorsystem.grpc.ElevatorService/Step
+Content-Type: application/json
+
+{}
+
+
+### Reset RPC ###
+
+GRPC localhost:9090/pl.swietek.elevatorsystem.grpc.ElevatorService/Reset
+Content-Type: application/json
+
+{
+  "number_of_elevators": 3,
+  "number_of_floors": 10
+}
+
+
+### StartSimulation RPC ###
+
+GRPC localhost:9090/pl.swietek.elevatorsystem.grpc.ElevatorService/StartSimulation
+Content-Type: application/json
+
+{
+  "number_of_elevators": 5,
+  "number_of_floors": 5
+}
+
+### GetSimulationData RPC ###
+
+GRPC localhost:9090/pl.swietek.elevatorsystem.grpc.ElevatorService/GetSimulationData
+Content-Type: application/json
+
+{}
+
+### GetElevator RPC ###
+
+GRPC localhost:9090/pl.swietek.elevatorsystem.grpc.ElevatorService/GetElevator
+Content-Type: application/json
+
+{
+  "id": 3
+}

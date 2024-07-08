@@ -1,0 +1,133 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "pl.swietek.elevatorsystem.grpc";
+option java_outer_classname = "ElevatorProto";
+
+service ElevatorService {
+  rpc Pickup(PickupRequest) returns (PickupResponse);
+  rpc Status(StatusRequest) returns (StatusResponse);
+  rpc Update(UpdateRequest) returns (UpdateResponse);
+  rpc Step(StepRequest) returns (StepResponse);
+  rpc Reset(ResetRequest) returns (ResetResponse);
+  rpc StartSimulation(StartSimulationRequest) returns (StartSimulationResponse);
+  rpc GetSimulationData(GetSimulationDataRequest) returns (GetSimulationDataResponse);
+  rpc GetElevator(GetElevatorRequest) returns (GetElevatorResponse);
+}
+
+message PickupRequest {
+  int32 floor = 1;
+  int32 direction = 2;
+}
+
+
+message PickupResponse {
+  repeated ElevatorData elevators_data = 1;
+}
+
+//---------------------------------
+
+message StatusRequest {
+}
+
+message StatusResponse {
+  repeated ElevatorStatus elevator_statuses = 1;
+}
+
+//---------------------------------
+
+message UpdateRequest {
+  int32 elevator_id = 1;
+  int32 new_current_floor = 2;
+  int32 new_target_floor = 3;
+}
+
+message UpdateResponse {
+  repeated ElevatorData elevators_data = 1;
+}
+
+//---------------------------------
+
+message StepRequest {
+}
+
+message StepResponse {
+  repeated ElevatorData elevators_data = 1;
+}
+
+//---------------------------------
+
+message ResetRequest {
+  int32 number_of_elevators = 1;
+  int32 number_of_floors = 2;
+}
+
+message ResetResponse {
+  repeated ElevatorData elevators_data = 1;
+}
+
+//---------------------------------
+
+message StartSimulationRequest {
+  int32 number_of_elevators = 1;
+  int32 number_of_floors = 2;
+}
+
+message StartSimulationResponse {
+  repeated ElevatorData elevators_data = 1;
+}
+
+//---------------------------------
+
+message GetSimulationDataRequest {
+}
+
+message GetSimulationDataResponse {
+  repeated ElevatorData elevators_data = 1;
+}
+
+//---------------------------------
+
+message GetElevatorRequest {
+  int64 id = 1;
+}
+
+message GetElevatorResponse {
+  ElevatorData elevator_data = 1;
+}
+
+//---------------------------------
+
+message ElevatorStatus {
+  int32 elevator_id = 1;
+  int32 current_floor = 2;
+  int32 target_floor = 3;
+}
+
+
+//---------------------------------
+//---------------------------------
+
+
+message IntToIntEntry {
+  int32 key = 1;
+  int32 value = 2;
+}
+
+message Empty {}
+
+enum ElevatorState {
+  IDLE = 0;
+  UP = 1;
+  DOWN = 2;
+}
+
+message ElevatorData {
+  int32 currentFloor = 1;
+  int32 nextSelectedFloor = 2;
+  int32 currentOccupancy = 3;
+  ElevatorState elevatorState = 4;
+  repeated IntToIntEntry targetFloors = 5;
+  repeated IntToIntEntry pickupFloorsUp = 6;
+  repeated IntToIntEntry pickupFloorsDown = 7;
+}
