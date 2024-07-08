@@ -81,7 +81,7 @@ App will be listening at: `http://localhost:8080/`
 ## Swagger
 Backend Swagger documentation for the API can be accessed at:
 ```
-http://localhost:8080/swagger-ui/index.html#/
+http://localhost:8000/swagger-ui/index.html#/
 ```
 
 
