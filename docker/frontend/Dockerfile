@@ -1,16 +1,16 @@
-FROM node:18.3.0-alpine
+FROM node:20.15.0-alpine
 
 WORKDIR /usr/src/app
 
-ENV PORT 3000
+ENV PORT 4200
 RUN apk add --update python3 make g++ && rm -rf /var/cache/apk/*
 
 COPY . .
 
-RUN yarn install
+RUN npm install
 
-#RUN yarn run build
+# RUN npm run build
 
-EXPOSE 3000
+EXPOSE 4200
 
-CMD ["yarn", "dev"]
+CMD ["npm", "run", "start"]

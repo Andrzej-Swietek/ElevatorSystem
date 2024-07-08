@@ -1,0 +1,14 @@
+
+
+
+@container (max-width: 400px) {
+  .col-span-1-or-full{
+    @apply col-span-full;
+  }
+}
+
+@container (min-width: 401px) {
+  .col-span-1-or-full {
+    @apply col-span-1;
+  }
+}
