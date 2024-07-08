@@ -96,4 +96,22 @@ mvn test
 
 ## Usage Manual
 
+### 1. In order to start interactions with elevator system press `Start Simulation` button
 
+
+![image](https://github.com/Andrzej-Swietek/ElevatorSystem/blob/22ddd419ecc43d563c1e573e750171fb2dafa652/docs/home.png?raw=true)
+
+### 2. Subsequently, enter simulation data such us number of floors in simulated building as well as number of elevators
+![image](https://github.com/Andrzej-Swietek/ElevatorSystem/blob/22ddd419ecc43d563c1e573e750171fb2dafa652/docs/start-simulation.png?raw=true)
+
+### 3. Window of simulation
+![image](https://github.com/Andrzej-Swietek/ElevatorSystem/blob/22ddd419ecc43d563c1e573e750171fb2dafa652/docs/simulation-1-1.jpg?raw=true)
+
+- Refresh Button - Reloads data from server and updates UI (Manually)
+  
+    In case introduced new source of input for simulation
+- Step Button - Make the next step in the simulation
+- Reset Button - Resets whole simulation
+
+### 4. Display elevator Details by clicking on the selected elevator
+![image](https://github.com/Andrzej-Swietek/ElevatorSystem/blob/22ddd419ecc43d563c1e573e750171fb2dafa652/docs/simulation-modal.png?raw=true)
