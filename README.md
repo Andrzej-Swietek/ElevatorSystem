@@ -97,28 +97,3 @@ mvn test
 ## Usage Manual
 
 
-
----
-### Setting Environment Variables in Angular using Docker Compose
-To set environment variables for the Angular application (like API_URL) from Docker Compose, you can use the following approach:
-1. Create an environment file (e.g., `.env`) with your environment variables:
-
-```dotenv
-API_URL=http://localhost:8000/api
-```
-This configuration will differ depending on using NGINX or not.
-
-2. Modify your docker-compose.yml to include the environment file and set the environment variable:
-```yml
-  frontend:
-    build:
-      context: .
-      dockerfile: docker/frontend/Dockerfile
-    volumes:
-      - ./:/app
-    ports:
-      - "3000:4200"
-    depends_on:
-    env_file:
-      - .env
-```
