@@ -29,7 +29,6 @@ yarn-error.log
 
 # Java
 *.class
-*.jar
 *.war
 *.nar
 *.ear

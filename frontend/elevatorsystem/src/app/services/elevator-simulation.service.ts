@@ -9,11 +9,13 @@ import StartRequest = SimulationService.StartRequest;
 import PickupRequest = SimulationService.PickupRequest;
 import UpdateRequest = SimulationService.UpdateRequest;
 
+import {environment} from "@environments/environment";
+
 @Injectable({
   providedIn: 'root'
 })
 export class ElevatorSimulationService implements ISimulationService{
-  private URL : string = "http://localhost:8080/elevator-system";
+  private URL : string = `${environment.API_URL ?? 'http://localhost:8080'}/elevator-system`;
   private http: HttpClient = inject(HttpClient);
 
   public constructor() {

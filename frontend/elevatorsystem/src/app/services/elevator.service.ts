@@ -4,12 +4,14 @@ import {Observable} from "rxjs";
 import {IElevatorData, IElevatorStatus} from "@shared/types";
 import {IElevatorService} from "@shared/types/IElevatorService";
 
+import {environment} from "@environments/environment";
+
 @Injectable({
   providedIn: 'root'
 })
 export class ElevatorService implements IElevatorService{
 
-  private URL: string = 'http://localhost:8080/elevator';
+  private URL: string = `${environment.API_URL ?? 'http://localhost:8080'}/elevator`;
   private http: HttpClient = inject(HttpClient);
   public constructor() { }
 
