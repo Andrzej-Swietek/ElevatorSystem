@@ -105,7 +105,7 @@ mvn test
 ![image](https://github.com/Andrzej-Swietek/ElevatorSystem/blob/22ddd419ecc43d563c1e573e750171fb2dafa652/docs/start-simulation.png?raw=true)
 
 ### 3. Window of simulation
-![image](https://github.com/Andrzej-Swietek/ElevatorSystem/blob/22ddd419ecc43d563c1e573e750171fb2dafa652/docs/simulation-1-1.jpg?raw=true)
+![image](https://github.com/Andrzej-Swietek/ElevatorSystem/blob/docs/docs/simulation-1-1.jpg?raw=true)
 
 - Refresh Button - Reloads data from server and updates UI (Manually)
   
@@ -114,4 +114,4 @@ mvn test
 - Reset Button - Resets whole simulation
 
 ### 4. Display elevator Details by clicking on the selected elevator
-![image](https://github.com/Andrzej-Swietek/ElevatorSystem/blob/22ddd419ecc43d563c1e573e750171fb2dafa652/docs/simulation-modal.png?raw=true)
+![image](https://github.com/Andrzej-Swietek/ElevatorSystem/blob/docs/docs/simulation-modal.png?raw=true)
